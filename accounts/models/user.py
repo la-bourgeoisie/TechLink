@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
 from django.db import models
 from django.utils import timezone
 
@@ -40,6 +40,21 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['nome']
+
+    groups = models.ManyToManyField(
+        Group,
+        related_name='+',
+        blank=True,
+        help_text='Grupos aos quais este usuário pertence.',
+        verbose_name='grupos',
+    )
+    user_permissions = models.ManyToManyField(
+        Permission,
+        related_name='+',
+        blank=True,
+        help_text='Permissões específicas para este usuário.',
+        verbose_name='permissões do usuário',
+    )
 
     def __str__(self):
         return f'{self.nome} ({self.tipo})'

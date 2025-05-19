@@ -1,4 +1,4 @@
 from .user import User
-from .perfil_aluno import AlunoProfile
-from .perfil_professor import ProfessorProfile
+from .perfil_aluno import PerfilAluno
+from .perfil_professor import PerfilProfessor
 from .area_conhecimento import AreaConhecimento
