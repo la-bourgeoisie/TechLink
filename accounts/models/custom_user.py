@@ -3,7 +3,7 @@ from django.db import models
 from django.utils import timezone
 
 
-class UserManager(BaseUserManager):
+class CustomUserManager(BaseUserManager):
     def create_user(self, email, nome, senha=None, **extra_fields):
         if not email:
             raise ValueError('O email é obrigatório')
@@ -19,15 +19,15 @@ class UserManager(BaseUserManager):
         return self.create_user(email, nome, senha, **extra_fields)
 
 
-class User(AbstractBaseUser, PermissionsMixin):
+class CustomUser(AbstractBaseUser, PermissionsMixin):
     TIPO_USUARIO = (
         ('aluno', 'Aluno'),
         ('professor', 'Professor'),
-        ('admin', 'Administrador'),
     )
 
     email = models.EmailField(unique=True)
-    nome = models.CharField(max_length=255)
+    nome = models.CharField(max_length=100)
+    sobrenome = models.CharField(max_length=100)
     telefone = models.CharField(max_length=20, blank=True, null=True)
     tipo = models.CharField(max_length=10, choices=TIPO_USUARIO)
 
@@ -36,10 +36,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     data_criacao = models.DateTimeField(default=timezone.now)
 
-    objects = UserManager()
+    objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['nome']
+    REQUIRED_FIELDS = ['nome','sobrenome']
 
     groups = models.ManyToManyField(
         Group,

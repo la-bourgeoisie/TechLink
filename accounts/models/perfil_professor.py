@@ -1,10 +1,10 @@
 from django.db import models
-from .user import User
+from .custom_user import CustomUser
 from .area_conhecimento import AreaConhecimento
 
 
 class PerfilProfessor(models.Model):
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE, related_name='professor_profile')
+    usuario = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='professor_profile')
     formacao = models.TextField()
     apresentacao = models.TextField()
     valor_hora = models.DecimalField(max_digits=6, decimal_places=2)

@@ -1,9 +1,9 @@
 from django.db import models
-from .user import User
+from .custom_user import CustomUser
 
 
 class PerfilAluno(models.Model):
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE, related_name='aluno_profile')
+    usuario = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='aluno_profile')
 
     def __str__(self):
         return self.usuario.nome
