@@ -6,7 +6,7 @@ from accounts.forms import CustomAuthenticationForm
 class LoginView(FormView):
     template_name = 'accounts/login.html'
     form_class = CustomAuthenticationForm
-    success_url = reverse_lazy('pages:home')
+    success_url = reverse_lazy('accounts:user_profile')
     
     def form_valid(self, form):
         email = form.cleaned_data.get('email')

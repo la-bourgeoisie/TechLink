@@ -39,7 +39,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['nome','sobrenome']
+    REQUIRED_FIELDS = ['nome','sobrenome','tipo']
 
     groups = models.ManyToManyField(
         Group,
