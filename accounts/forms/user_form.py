@@ -9,11 +9,14 @@ class CustomUserCreationForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ['email', 'nome', 'sobrenome', 'telefone', 'tipo']
+        widgets = {
+            'telefone': forms.TextInput(attrs={
+                'placeholder': 'Ex: (21) 98765-4321'
+            })
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        # Aplica 'form-control' a todos os campos do formulário
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
 
