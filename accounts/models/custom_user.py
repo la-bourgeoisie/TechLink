@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
+from django.core.validators import MinLengthValidator
 from django.db import models
 from django.utils import timezone
 
@@ -28,7 +29,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     nome = models.CharField(max_length=100)
     sobrenome = models.CharField(max_length=100)
-    telefone = models.CharField(max_length=20, blank=True, null=True)
+    num_celular = models.CharField(max_length=11,
+                                validators=[MinLengthValidator(10, message='O número de telefone deve conter exatamente 11 dígitos.')],
+                                blank=True,
+                                null=True)
     tipo = models.CharField(max_length=10, choices=TIPO_USUARIO)
 
     is_active = models.BooleanField(default=True)
@@ -40,21 +44,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['nome','sobrenome','tipo']
-
-    groups = models.ManyToManyField(
-        Group,
-        related_name='+',
-        blank=True,
-        help_text='Grupos aos quais este usuário pertence.',
-        verbose_name='grupos',
-    )
-    user_permissions = models.ManyToManyField(
-        Permission,
-        related_name='+',
-        blank=True,
-        help_text='Permissões específicas para este usuário.',
-        verbose_name='permissões do usuário',
-    )
 
     def __str__(self):
         return f'{self.nome} ({self.tipo})'

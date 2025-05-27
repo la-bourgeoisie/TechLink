@@ -18,9 +18,16 @@
     <form method="post" class="w-75">
         {% csrf_token %}
         {{ form.as_p }}
-        <div class="d-flex justify-content-between">
-            <a class="link-body-emphasis black w-50" href="{% url 'accounts:register' %}">Não tem uma conta? Registre-se</a>
-            <button class="btn btn-success" type="submit">Entrar</button>
+        <div class="row my-3">
+            <div class="col-12 d-flex flex-column justify-content-between">
+                <button class="btn btn-success h-100" type="submit">Entrar</button>
+            </div>
+        </div>
+        <div class="row my-3">
+            <div class="col-12 d-flex flex-column justify-content-between">
+                <p class="text-muted m-0">Não tem uma conta?</p>
+                <a class="link-body-emphasis" href="{% url 'accounts:register' %}">Registre-se</a>
+            </div>
         </div>
     </form>
 </div>

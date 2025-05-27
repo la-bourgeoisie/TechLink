@@ -8,7 +8,7 @@ class CustomUserCreationForm(forms.ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ['email', 'nome', 'sobrenome', 'telefone', 'tipo']
+        fields = ['email', 'nome', 'sobrenome', 'num_celular', 'tipo']
         widgets = {
             'telefone': forms.TextInput(attrs={
                 'placeholder': 'Ex: (21) 98765-4321'
