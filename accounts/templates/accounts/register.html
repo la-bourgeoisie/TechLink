@@ -1,0 +1,84 @@
+{% extends "base_accounts.html" %}
+{% load static %}
+
+
+{% block titles %}
+    Techlink | Registro
+{% endblock %}
+
+
+{% block styles %}
+    
+{% endblock %}
+
+
+{% block content %}
+<div class="card-body d-flex align-items-center flex-column" >
+    <h2 class="card-title m-3 mb-4" >Criar Conta</h2>
+    <form method="post" class="w-75">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <div>
+            <label for="id_email">Email:</label>
+            {{ form.email }}
+            {{ form.email.errors }}
+        </div>
+
+        <div>
+            <label for="id_first_name">Nome:</label>
+            {{ form.nome }}
+            {{ form.nome.errors }}
+        </div>
+
+        <div>
+            <label for="id_last_name">Sobrenome:</label>
+            {{ form.sobrenome }}
+            {{ form.sobrenome.errors }}
+        </div>
+
+        <div>
+            <label for="id_cellphone">Celular:</label>
+            {{ form.num_celular }}
+            {{ form.num_celular.errors }}
+        </div>
+
+
+        <div>
+            <label for="id_password1">Senha:</label>
+            {{ form.password1 }}
+            {{ form.password1.errors }}
+        </div>
+
+        <div>
+            <label for="id_password2">Confirme a senha:</label>
+            {{ form.password2 }}
+            {{ form.password2.errors }}
+        </div>
+
+        <div>
+            <label for="tipo">Tipo de conta:</label>
+            {{ form.tipo }}
+            {{ form.tipo.errors }}
+        </div>
+
+        <div class="row my-3">
+            <div class="col-12 d-flex flex-column justify-content-between">
+                <button class="btn btn-success" type="submit">Registrar</button>
+            </div>
+        </div>
+        <div class="row my-3">
+            <div class="col-12 d-flex flex-column justify-content-between">
+                <p class="text-muted m-0">Já tem uma conta?</p>
+               <a class="link-body-emphasis black w-50" href="{% url 'accounts:login' %}">Entrar!</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+{% endblock %}

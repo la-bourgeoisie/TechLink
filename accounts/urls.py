@@ -1,12 +1,18 @@
 from django.urls import path
+from django.contrib.auth.views import LogoutView
+from accounts.views import(
+    LoginView,
+    RegisterView,
+    UserProfileView,
+)
+from accounts.models import CustomUser
 
 app_name = 'accounts'
 
 urlpatterns = [
-    path('login/', 'accounts.views.login', name='login'),
-    path('logout/', 'accounts.views.logout', name='logout'),
-    path('register/', 'accounts.views.register', name='register'),
-    path('profile/', 'accounts.views.profile', name='profile'),
-    path('password_change/', 'accounts.views.password_change', name='password_change'),
-    path('password_reset/', 'accounts.views.password_reset', name='password_reset'),
+    path('login/', LoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(next_page='accounts:login'), name='logout'),
+    path('registrar/', RegisterView.as_view(), name='register'),
+    path('usuario/me', UserProfileView.as_view(), name='user_profile'),
+    path('usuario/<int:pk>', UserProfileView.as_view(), name='user_profile'),
 ]

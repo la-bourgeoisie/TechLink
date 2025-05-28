@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titles %}
+    Techlink | Login
+{% endblock %}
+
+
+{% block styles %}
+
+{% endblock %}
+
+
+{% block content %}
+<div class="container w-full flex items-center flex-col mt-12 mb-40">
+    <h2 class="text-6xl text-gray-900 font-semibold mb-10">Faça seu Login</h2>
+  
+    <form method="post" class="w-full max-w-3xl">
+      {% csrf_token %}
+  
+      <div class="mb-5">
+        <label for="{{ form.email.id_for_label }}" class="text-gray-900">Email</label>
+        {{ form.email }}
+        {% if form.email.errors %}
+          <p class="text-red-500 text-sm mt-1">{{ form.email.errors.as_text }}</p>
+        {% endif %}
+      </div>
+  
+      <div class="mb-7">
+        <label for="{{ form.password.id_for_label }}" class="text-gray-900">Senha</label>
+        {{ form.password }}
+        {% if form.password.errors %}
+          <p class="text-red-500 text-sm mt-1">{{ form.password.errors.as_text }}</p>
+        {% endif %}
+      </div>
+  
+      <div class="flex items-center justify-between mb-5">
+        <div class="flex items-center gap-2">
+          <input type="checkbox" name="remember">
+          <span class="text-gray-700">Lembre de mim</span>
+        </div>
+        <button class="py-2 px-10 bg-red-900 text-white font-semibold flex gap-3 items-center cursor-pointer hover:bg-red-800 transition duration-300" type="submit">
+          Entrar <i class="fa-solid fa-arrow-right" style="color: #ffffff;"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+{% endblock %}
+
+
+{% block scripts %}
+
+{% endblock %}

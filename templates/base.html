@@ -1,0 +1,150 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block styles %}{% endblock %}
+    <title>{% block titles %}{% endblock %}</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/perfil.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous"> -->
+</head>
+<body class="flex flex-col min-h-screen">
+    <header class="flex justify-around p-4 border-b-gray-200 border-b">
+        <div class="flex items-center gap-2">
+            <img src="{% static 'img/GraduationCap.svg' %}" alt="Chapéu de graduação">
+            <h1 class="font-semibold text-gray-900 text-3xl">TechLink</h1>
+        </div>
+        <div class="flex gap-3 items-center">
+            <span class="text-gray-600 text-sm">Não possui uma conta?</span>
+            <button class="bg-red-300 text-red-900 px-5 py-3 font-semibold text-sm cursor-pointer hover:bg-red-100 transition duration-300">Criar Conta</button>
+        </div>
+    </header>
+    <div class="flex justify-center items-center flex-grow">
+            {% block content %}
+            {% endblock %}          
+    </div>
+    </div>
+    <footer class="bg-gray-900 h-[400px] flex items-center w-full flex-col justify-between">
+        <div class="w-full flex justify-center items-center mt-12 gap-44">
+            <div class="flex flex-col gap-4">
+                <div class="flex items-center gap-2">
+                    <img src="{% static 'img/GraduationCap.svg' %}" alt="Chapéu de graduação">
+                    <h3 class="font-semibold text-white text-3xl">TechLink</h3>
+                </div>
+                <span class="text-gray-400">Siga-nos em outras plataformas</span>
+                <div class="flex gap-3">
+                    <div class="box-social">
+                        <i class="fa-brands fa-facebook-f fa-lg" style="color: #ffffff;"></i>
+                    </div>
+                    <div class="box-social">
+                        <i class="fa-brands fa-instagram fa-lg" style="color: #ffffff;"></i>
+                    </div>
+                    <div class="box-social hover:shadow-[0_0_15px_4px_rgba(255,0,0,0.5)]">
+                        <i class="fa-brands fa-linkedin-in fa-lg" style="color: #ffffff;"></i>
+                    </div>
+                    <div class="box-social">
+                        <i class="fa-brands fa-x-twitter fa-lg" style="color: #ffffff;"></i>
+                    </div>
+                    <div class="box-social">
+                        <i class="fa-brands fa-youtube fa-lg" style="color: #ffffff;"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex gap-8">
+                <div>
+                    <h5 class="text-white mb-4">TOP 4 CATEGORIAS</h5>
+                    <ul class="flex gap-3 flex-col">
+                        <li class="group text-gray-500 hover:text-white hover:border-b hover:border-red-700 transition duration-300 cursor-pointer flex items-center gap-4">
+                            Desenvolvimento
+                            <span class="text-white opacity-0 translate-x-[-5px] group-hover:opacity-100 group-hover:text-xs group-hover:translate-x-0 transition duration-300">
+                                <i class="fa-solid fa-arrow-right" style="color: #ffffff;"></i>
+                            </span>
+                        </li>
+                        <li class="group text-gray-500 hover:text-white hover:border-b hover:border-red-700 transition duration-300 cursor-pointer flex items-center gap-4">
+                            Finanças e Contabilidade
+                            <span class="text-white opacity-0 translate-x-[-5px] group-hover:opacity-100 group-hover:text-xs group-hover:translate-x-0 transition duration-300">
+                                <i class="fa-solid fa-arrow-right" style="color: #ffffff;"></i>
+                            </span>
+                        </li>
+                        <li class="group text-gray-500 hover:text-white hover:border-b hover:border-red-700 transition duration-300 cursor-pointer flex items-center gap-4">
+                            Design
+                            <span class="text-white opacity-0 translate-x-[-5px] group-hover:opacity-100 group-hover:text-xs group-hover:translate-x-0 transition duration-300">
+                                <i class="fa-solid fa-arrow-right" style="color: #ffffff;"></i>
+                            </span>
+                        </li>
+                        <li class="group text-gray-500 hover:text-white hover:border-b hover:border-red-700 transition duration-300 cursor-pointer flex items-center gap-4">
+                            Negócios
+                            <span class="text-white opacity-0 translate-x-[-5px] group-hover:opacity-100 group-hover:text-xs group-hover:translate-x-0 transition duration-300">
+                                <i class="fa-solid fa-arrow-right" style="color: #ffffff;"></i>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-white mb-4">LINKS RÁPIDOS</h5>
+                    <ul class="flex gap-3 flex-col">
+                        <li class="group text-gray-500 hover:text-white hover:border-b hover:border-red-700 transition duration-300 cursor-pointer flex items-center gap-4">
+                            Sobre
+                            <span class="text-white opacity-0 translate-x-[-5px] group-hover:opacity-100 group-hover:text-xs group-hover:translate-x-0 transition duration-300">
+                                <i class="fa-solid fa-arrow-right" style="color: #ffffff;"></i>
+                            </span>
+                        </li>
+                        <li class="group text-gray-500 hover:text-white hover:border-b hover:border-red-700 transition duration-300 cursor-pointer flex items-center gap-4">
+                            Torne-se um instrutor
+                            <span class="text-white opacity-0 translate-x-[-5px] group-hover:opacity-100 group-hover:text-xs group-hover:translate-x-0 transition duration-300">
+                                <i class="fa-solid fa-arrow-right" style="color: #ffffff;"></i>
+                            </span>
+                        </li>
+                        <li class="group text-gray-500 hover:text-white hover:border-b hover:border-red-700 transition duration-300 cursor-pointer flex items-center gap-3">
+                            Contato
+                            <span class="text-white opacity-0 translate-x-[-5px] group-hover:opacity-100 group-hover:text-xs group-hover:translate-x-0 transition duration-300">
+                                <i class="fa-solid fa-arrow-right" style="color: #ffffff;"></i>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-white mb-4">SUPORTE</h5>
+                    <ul class="flex gap-3 flex-col">
+                        <li class="group text-gray-500 hover:text-white hover:border-b hover:border-red-700 transition duration-300 cursor-pointer flex items-center gap-4">
+                            Centro de Ajuda
+                            <span class="text-white opacity-0 translate-x-[-5px] group-hover:opacity-100 group-hover:text-xs group-hover:translate-x-0 transition duration-300">
+                                <i class="fa-solid fa-arrow-right" style="color: #ffffff;"></i>
+                            </span>
+                        </li>
+                        <li class="group text-gray-500 hover:text-white hover:border-b hover:border-red-700 transition duration-300 cursor-pointer flex items-center gap-4">
+                            FAQs
+                            <span class="text-white opacity-0 translate-x-[-5px] group-hover:opacity-100 group-hover:text-xs group-hover:translate-x-0 transition duration-300">
+                                <i class="fa-solid fa-arrow-right" style="color: #ffffff;"></i>
+                            </span>
+                        </li>
+                        <li class="group text-gray-500 hover:text-white hover:border-b hover:border-red-700 transition duration-300 cursor-pointer flex items-center gap-4">
+                            Termos e condições
+                            <span class="text-white opacity-0 translate-x-[-5px] group-hover:opacity-100 group-hover:text-xs group-hover:translate-x-0 transition duration-300">
+                                <i class="fa-solid fa-arrow-right" style="color: #ffffff;"></i>
+                            </span>
+                        </li>
+                        <li class="group text-gray-500 hover:text-white hover:border-b hover:border-red-700 transition duration-300 cursor-pointer flex items-center gap-4">
+                            Políticas de Privacidade
+                            <span class="text-white opacity-0 translate-x-[-5px] group-hover:opacity-100 group-hover:text-xs group-hover:translate-x-0 transition duration-300">
+                                <i class="fa-solid fa-arrow-right" style="color: #ffffff;"></i>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+        </div>
+        <div class="p-4 border-t border-t-gray-800 w-full text-center text-sm mb-10">
+            <span class="text-gray-400">© 2025 - Projeto da Disciplina Laboratório e Desenvolvimento de Software - Universidade Veiga de Almeida</span>
+        </div>
+    </footer>
+    {% block scripts %}{% endblock %}
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script> -->
+</body>
+</html>
