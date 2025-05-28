@@ -39,11 +39,13 @@ class CustomUserCreationForm(forms.ModelForm):
 class CustomAuthenticationForm(forms.Form):
     email = forms.EmailField(label="Email",
         widget=forms.EmailInput(attrs={
-            'class': 'form-control'
+            'class': 'w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 mb-5 outline-none',
+            'placeholder': 'Email'
         })
     )
     password = forms.CharField(label="Senha", 
         widget=forms.PasswordInput(attrs={
-            'class': 'form-control',
+            'class': 'w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 mb-7 outline-none',
+            'placeholder': 'Senha'
         })
     )
