@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titles %}
+    Techlink | Checkout
+{% endblock %}
+
+
+{% block styles %}
+
+{% endblock %}
+
+{% block content %}
+
+<main class="w-full">
+    <div class="bg-gray-200 text-center p-6 flex flex-col gap-3">
+        <h3 class="text-gray-900 text-xl font-semibold">Checkout</h3>
+        <p class="text-gray-900"> <span class="text-gray-600">Inicio /</span> Checkout</p>
+    </div>
+
+    <div class="flex justify-center items-center mt-16">
+        <div class="flex flex-col">
+            <h2 class="text-gray-900 font-semibold text-3xl mb-10">Método de Pagamento</h2>
+            <div class="flex justify-between items-center border-green-500 border px-4 py-2">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-credit-card" style="color: #ff6636;"></i>
+                    <span class="text-gray-700">Cartão de Crédito</span>
+                </div>
+                <i class="fa-solid fa-circle-check" style="color: #23BD33;"></i>
+            </div>
+
+            <form method="post" class="w-full max-w-3xl mt-6">
+                {% csrf_token %}
+                    
+                  <label for="{{ form.name.id_for_label }}" class="text-gray-900">Nome</label>
+                  {{ form.name }}
+                  {% if form.name.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ form.name.errors.as_text }}</p>
+                  {% endif %}
+            
+                  <label for="{{ form.number.id_for_label }}" class="text-gray-900">Número</label>
+                  {{ form.number }}
+                  {% if form.number.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ form.number.errors.as_text }}</p>
+                  {% endif %}
+
+                  <div class="flex justify-between gap-3">
+                    <div class="flex-1">
+                        <label for="{{ form.expiration_date.id_for_label }}" class="text-gray-900">Data de Validade</label>
+                        {{ form.expiration_date }}
+                        {% if form.expiration_date.errors %}
+                        <p class="text-red-500 text-sm mt-1">{{ form.expiration_date.errors.as_text }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="flex-1">
+                        <label for="{{ form.cvc.id_for_label }}" class="text-gray-900">CVC</label>
+                        {{ form.cvc }}
+                        {% if form.cvc.errors %}
+                          <p class="text-red-500 text-sm mt-1">{{ form.cvc.errors.as_text }}</p>
+                        {% endif %}
+                    </div>
+                  </div>
+            </form>
+        
+        </div>
+
+    
+        <div>
+            <div>
+                <span>Agendamento</span>
+                <div>
+                    <span>Instrutor: Fernando Ribeiro</span> 
+                    <span> Dia: 26/05/2025</span>
+                    <span>Horário: 14:00 às 15:00</span> 
+                </div>
+            </div>
+
+            <div>
+                <span>Resumo da Compra</span>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+  const input = document.getElementById("card-number");
+  if (input) {
+    input.addEventListener("input", function (e) {
+      let value = e.target.value.replace(/\D/g, '');
+      value = value.substring(0, 16);
+      let formatted = '';
+
+      for (let i = 0; i < value.length; i++) {
+        if (i > 0 && i % 4 === 0) {
+          formatted += ' ';
+        }
+        formatted += value[i];
+      }
+
+      e.target.value = formatted;
+    });
+  }
+
+  const expirationInput = document.getElementById("expiration-date");
+  if (expirationInput) {
+    expirationInput.addEventListener("input", function (e) {
+      let value = e.target.value.replace(/\D/g, "");
+
+      if (value.length > 4) {
+          value = value.slice(0, 4);
+      }
+
+      if (value.length >= 3) {
+          value = value.slice(0, 2) + "/" + value.slice(2);
+      }
+
+      e.target.value = value;
+    });
+  }
+});
+
+</script>
+
+{% endblock %}
+
