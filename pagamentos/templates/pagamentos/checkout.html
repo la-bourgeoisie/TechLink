@@ -12,13 +12,13 @@
 
 {% block content %}
 
-<main class="w-full">
+<main class="w-full mb-40">
     <div class="bg-gray-200 text-center p-6 flex flex-col gap-3">
         <h3 class="text-gray-900 text-xl font-semibold">Checkout</h3>
         <p class="text-gray-900"> <span class="text-gray-600">Inicio /</span> Checkout</p>
     </div>
 
-    <div class="flex justify-center items-center mt-16">
+    <div class="flex justify-center items-start mt-16 gap-16">
         <div class="flex flex-col">
             <h2 class="text-gray-900 font-semibold text-3xl mb-10">Método de Pagamento</h2>
             <div class="flex justify-between items-center border-green-500 border px-4 py-2">
@@ -66,18 +66,34 @@
         </div>
 
     
-        <div>
-            <div>
-                <span>Agendamento</span>
-                <div>
+        <div class="border border-gray-200 w-[536px]">
+            <div class="border-b border-gray-200 w-full p-6 flex flex-col">
+                <span class="text-gray-900 text-xl font-medium mb-4">Agendamento</span>
+                <div class="flex flex-col text-gray-900">
                     <span>Instrutor: Fernando Ribeiro</span> 
                     <span> Dia: 26/05/2025</span>
                     <span>Horário: 14:00 às 15:00</span> 
                 </div>
             </div>
 
-            <div>
-                <span>Resumo da Compra</span>
+            <div class="p-6 w-full flex flex-col">
+                <span class="text-gray-900 text-xl font-medium mb-4">Resumo da Compra</span>
+                <div class="flex justify-between mb-5">
+                  <span class="text-gray-600">Subtotal</span>
+                  <span class="text-gray-900">R$ 50,00</span>
+                </div>
+                <div class="flex justify-between border-b border-gray-200 pb-6">
+                  <span class="text-gray-600">Cupom</span>
+                  <span class="text-gray-900">8%</span>
+                </div>
+            </div>
+
+            <div class="px-6 w-full flex flex-col">
+              <div class="flex justify-between">
+                <span class="text-gray-800">Total:</span>
+                <span class="text-gray-800 font-semibold text-2xl">R$ 46,00</span>
+              </div>
+              <button class="bg-red-900 text-white px-5 py-3 font-semibold my-6 text-xl cursor-pointer hover:bg-red-700 transition duration-300">Finalizar Pagamento</button>
             </div>
         </div>
     </div>
