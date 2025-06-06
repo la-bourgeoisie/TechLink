@@ -21,13 +21,25 @@
     <div class="flex justify-center items-start mt-16 gap-16">
         <div class="flex flex-col">
             <h2 class="text-gray-900 font-semibold text-3xl mb-10">Método de Pagamento</h2>
-            <div class="flex justify-between items-center border-green-500 border px-4 py-2">
+            <div class="flex gap-4 w-full">
+              <!-- Cartão de Crédito (pré-selecionado) -->
+              <div class="payment-option flex justify-between items-center border border-green-500 px-4 py-2 flex-1 cursor-pointer" data-method="credit">
                 <div class="flex items-center gap-3">
-                    <i class="fa-solid fa-credit-card" style="color: #ff6636;"></i>
-                    <span class="text-gray-700">Cartão de Crédito</span>
+                  <i class="fa-solid fa-credit-card" style="color: #ff6636;"></i>
+                  <span class="text-gray-700">Cartão de Crédito</span>
                 </div>
-                <i class="fa-solid fa-circle-check" style="color: #23BD33;"></i>
+                <i class="fa-solid fa-circle-check text-green-600"></i>
+              </div>
+
+              <!-- Pix -->
+              <div class="payment-option border border-gray-500 px-4 py-2 flex items-center gap-3 cursor-pointer" data-method="pix">
+                <img class="w-[24px] h-[24px]" src="{% static 'img/pix.png' %}" alt="ícone do pix">
+                <span class="text-gray-700">Pix</span>
+              </div>
             </div>
+
+
+            
 
             <form method="post" class="w-full max-w-3xl mt-6">
                 {% csrf_token %}
@@ -100,41 +112,64 @@
 </main>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-  const input = document.getElementById("card-number");
-  if (input) {
-    input.addEventListener("input", function (e) {
-      let value = e.target.value.replace(/\D/g, '');
-      value = value.substring(0, 16);
-      let formatted = '';
+  document.addEventListener("DOMContentLoaded", function () {
+    const input = document.getElementById("card-number");
+    if (input) {
+      input.addEventListener("input", function (e) {
+        let value = e.target.value.replace(/\D/g, '');
+        value = value.substring(0, 16);
+        let formatted = '';
 
-      for (let i = 0; i < value.length; i++) {
-        if (i > 0 && i % 4 === 0) {
-          formatted += ' ';
+        for (let i = 0; i < value.length; i++) {
+          if (i > 0 && i % 4 === 0) {
+            formatted += ' ';
+          }
+          formatted += value[i];
         }
-        formatted += value[i];
-      }
 
-      e.target.value = formatted;
-    });
-  }
+        e.target.value = formatted;
+      });
+    }
 
-  const expirationInput = document.getElementById("expiration-date");
-  if (expirationInput) {
-    expirationInput.addEventListener("input", function (e) {
-      let value = e.target.value.replace(/\D/g, "");
+    const expirationInput = document.getElementById("expiration-date");
+    if (expirationInput) {
+        expirationInput.addEventListener("input", function (e) {
+          let value = e.target.value.replace(/\D/g, "");
 
-      if (value.length > 4) {
-          value = value.slice(0, 4);
-      }
+          if (value.length > 4) {
+              value = value.slice(0, 4);
+          }
 
-      if (value.length >= 3) {
-          value = value.slice(0, 2) + "/" + value.slice(2);
-      }
+          if (value.length >= 3) {
+              value = value.slice(0, 2) + "/" + value.slice(2);
+          }
 
-      e.target.value = value;
-    });
-  }
+          e.target.value = value;
+        });
+    }
+
+    const paymentOptions = document.querySelectorAll(".payment-option");
+
+    paymentOptions.forEach(option => {
+      option.addEventListener("click", () => {
+        paymentOptions.forEach(opt => {
+          opt.classList.remove("border-green-500");
+          opt.classList.add("border-gray-500");
+
+          const icon = opt.querySelector(".fa-circle-check");
+          if (icon) {
+            icon.remove();
+          }
+        });
+
+        option.classList.remove("border-gray-500");
+        option.classList.add("border-green-500");
+
+        const checkIcon = document.createElement("i");
+        checkIcon.className = "fa-solid fa-circle-check text-green-600";
+        option.appendChild(checkIcon);
+      });
+  });  
 });
 
 </script>
