@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from accounts.forms.user_form import CustomUserCreationForm
 
-class UserProfileView(LoginRequiredMixin, TemplateView):
+class UserProfileEditView(LoginRequiredMixin, TemplateView):
     template_name = 'profiles/perfil_usuario.html'
 
     def get_context_data(self, **kwargs):
