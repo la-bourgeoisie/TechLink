@@ -28,15 +28,15 @@
             {% endblock %}          
     </div>
     </div>
-    <footer class="bg-gray-900 h-[400px] flex items-center w-full flex-col justify-between">
-        <div class="w-full flex justify-center items-center mt-12 gap-44">
-            <div class="flex flex-col gap-4">
-                <div class="flex items-center gap-2">
+    <footer class="bg-gray-900 min-h-[400px] flex items-center w-full flex-col justify-between">
+        <div class="w-full flex justify-center items-start px-4 gap-8 lg:gap-44 lg:mt-12">
+            <div class="flex flex-col gap-4 items-center lg:items-start">
+                <div class="flex items-center gap-2 mt-6">
                     <img src="{% static 'img/GraduationCap.svg' %}" alt="Chapéu de graduação">
                     <h3 class="font-semibold text-white text-3xl">TechLink</h3>
                 </div>
-                <span class="text-gray-400">Siga-nos em outras plataformas</span>
-                <div class="flex gap-3">
+                <span class="text-gray-400 text-center md:text-left text-sm md:text-base">Siga-nos em outras plataformas</span>
+                <div class="flex gap-2 md:gap-3 flex-wrap justify-center md:justify-start">
                     <div class="box-social">
                         <i class="fa-brands fa-facebook-f fa-lg" style="color: #ffffff;"></i>
                     </div>
@@ -55,7 +55,7 @@
                 </div>
             </div>
 
-            <div class="flex gap-8">
+            <div class="hidden lg:flex gap-8">
                 <div>
                     <h5 class="text-white mb-4">TOP 4 CATEGORIAS</h5>
                     <ul class="flex gap-3 flex-col">
@@ -138,9 +138,41 @@
                     </ul>
                 </div>
             </div>
+
             
         </div>
-        <div class="p-4 border-t border-t-gray-800 w-full text-center text-sm mb-10">
+
+        <div class="lg:hidden w-full px-4 mt-8 space-y-6">
+            <div class="text-center">
+                <h5 class="text-white mb-3 text-sm font-semibold">TOP 4 CATEGORIAS</h5>
+                <div class="flex flex-wrap justify-center gap-2">
+                    <span class="text-gray-400 text-xs px-2 py-1 border border-gray-700 rounded">Desenvolvimento</span>
+                    <span class="text-gray-400 text-xs px-2 py-1 border border-gray-700 rounded">Finanças</span>
+                    <span class="text-gray-400 text-xs px-2 py-1 border border-gray-700 rounded">Design</span>
+                    <span class="text-gray-400 text-xs px-2 py-1 border border-gray-700 rounded">Negócios</span>
+                </div>
+            </div>
+        
+            <div class="text-center">
+                <h5 class="text-white mb-3 text-sm font-semibold">LINKS RÁPIDOS</h5>
+                <div class="flex flex-wrap justify-center gap-2">
+                    <span class="text-gray-400 text-xs px-2 py-1 border border-gray-700 rounded">Sobre</span>
+                    <span class="text-gray-400 text-xs px-2 py-1 border border-gray-700 rounded">Instrutor</span>
+                    <span class="text-gray-400 text-xs px-2 py-1 border border-gray-700 rounded">Contato</span>
+                </div>
+            </div>
+            <div class="text-center">
+                <h5 class="text-white mb-3 text-sm font-semibold">SUPORTE</h5>
+                <div class="flex flex-wrap justify-center gap-2">
+                    <span class="text-gray-400 text-xs px-2 py-1 border border-gray-700 rounded">Centro de Ajuda</span>
+                    <span class="text-gray-400 text-xs px-2 py-1 border border-gray-700 rounded">FAQs</span>
+                    <span class="text-gray-400 text-xs px-2 py-1 border border-gray-700 rounded">Termos e condições</span>
+                    <span class="text-gray-400 text-xs px-2 py-1 border border-gray-700 rounded">Políticas de Privacidade</span>
+                </div>
+            </div>
+            </div>
+            
+        <div class="p-4 border-t border-t-gray-800 w-full text-center text-xs lg:text-sm mb-4 lg:mb-10 mt-8">
             <span class="text-gray-400">© 2025 - Projeto da Disciplina Laboratório e Desenvolvimento de Software - Universidade Veiga de Almeida</span>
         </div>
     </footer>
