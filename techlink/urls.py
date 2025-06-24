@@ -1,8 +1,8 @@
 from django.urls import path
-from .views import ProfessorBuscaView
+from techlink.views import ProfessorSearchView
 
 app_name = 'techlink'
 
 urlpatterns = [
-    path('buscar/', ProfessorBuscaView.as_view(), name='buscar_professor'),
+    path('buscar/', ProfessorSearchView.as_view(), name='buscar'),
 ]

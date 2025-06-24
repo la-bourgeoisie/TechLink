@@ -1,6 +1,9 @@
 from django.urls import path
 
 app_name = 'pagamentos'
+
+urlpatterns = []
+
 '''
 urlpatterns = [
     path('pagamento/<int:id>/', 'pagamentos.views.pagamento', name='pagamento'),

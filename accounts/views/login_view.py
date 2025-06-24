@@ -15,14 +15,8 @@ class LoginView(FormView):
         user = authenticate(self.request, email=email, password=password)
 
         if user is not None:
-            primeira_vez = user.last_login is None
-
             login(self.request, user)
-
-            if primeira_vez:
-                return redirect('accounts:user_profile')  # nome da URL para o primeiro login
-
-            return super().form_valid(form)
+            return redirect(self.success_url)
         else:
             form.add_error(None, "Email ou senha inválidos.")
             return self.form_invalid(form)

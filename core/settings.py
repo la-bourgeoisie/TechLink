@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'accounts',
     'pagamentos',
     'agendamentos',
+    'techlink',
 ]
 
 MIDDLEWARE = [

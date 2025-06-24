@@ -26,6 +26,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         ('professor', 'Professor'),
     )
 
+    profile_picture = models.ImageField(upload_to='profile_pictures',blank=True,null=True)
     email = models.EmailField(unique=True)
     nome = models.CharField(max_length=100)
     sobrenome = models.CharField(max_length=100)

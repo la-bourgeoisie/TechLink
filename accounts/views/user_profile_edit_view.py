@@ -2,26 +2,71 @@ from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from accounts.forms.user_form import CustomUserCreationForm
+from accounts.forms.professor_form import ProfessorProfileForm
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 
 class UserProfileEditView(LoginRequiredMixin, TemplateView):
-    template_name = 'profiles/perfil_usuario.html'
+    template_name = 'profiles/user_profile.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         usuario = self.request.user
-        form = CustomUserCreationForm(instance=usuario)
+
         context['usuario'] = usuario
-        context['form'] = form
+        context['profile_form'] = CustomUserCreationForm(instance=usuario)
+        context['password_form'] = PasswordChangeForm(user=usuario)
+
+        if usuario.tipo == 'professor':
+            context['professor_form'] = ProfessorProfileForm(instance=usuario.professor_profile)
+
         return context
+
 
     def post(self, request, *args, **kwargs):
         usuario = request.user
-        form = CustomUserCreationForm(request.POST, instance=usuario)
 
-        if form.is_valid():
-            form.save()
-            return redirect('accounts:user_profile')
+        if 'submit_perfil' in request.POST:
+            profile_form = CustomUserCreationForm(request.POST, instance=usuario)
+            if usuario.tipo == 'professor':
+                professor_form = ProfessorProfileForm(request.POST, instance=usuario.professor_profile)
+            else:
+                professor_form = None
 
-        context = self.get_context_data()
-        context['form'] = form
-        return self.render_to_response(context)
+            if profile_form.is_valid() and (not professor_form or professor_form.is_valid()):
+                profile_form.save()
+                if professor_form:
+                    professor_form.save()
+                return redirect('accounts:user_profile')
+
+            context = self.get_context_data()
+            context['profile_form'] = profile_form
+            if professor_form:
+                context['professor_form'] = professor_form
+            return self.render_to_response(context)
+
+        elif 'submit_senha' in request.POST:
+            password_form = PasswordChangeForm(user=usuario, data=request.POST)
+            if password_form.is_valid():
+                user = password_form.save()
+                update_session_auth_hash(request, user)
+                return redirect('accounts:user_profile')
+
+            context = self.get_context_data()
+            context['password_form'] = password_form
+            return self.render_to_response(context)
+        
+        elif 'submit_professor' in request.POST:
+            if usuario.tipo != 'professor':
+                return redirect('accounts:user_profile')
+
+            professor_form = ProfessorProfileForm(request.POST, instance=usuario.professor_profile)
+            if professor_form.is_valid():
+                professor_form.save()
+                return redirect('accounts:user_profile')
+
+            context = self.get_context_data()
+            context['professor_form'] = professor_form
+            return self.render_to_response(context)
+
+        return redirect('accounts:user_profile')
