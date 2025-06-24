@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Buscar Professores</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 8px;
+            width: 300px;
+        }
+        button {
+            padding: 8px 12px;
+        }
+        .professor {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Buscar Professores</h1>
+
+    <form method="get">
+        <input type="text" name="q" placeholder="Buscar por palavra-chave na apresentação" value="{{ request.GET.q }}">
+        <button type="submit">Pesquisar</button>
+    </form>
+
+    {% if professores %}
+        {% for professor in professores %}
+            <div class="professor">
+                <h2>{{ professor.usuario.nome }}</h2>
+                <p><strong>Apresentação:</strong> {{ professor.apresentacao }}</p>
+                <p><strong>Valor/hora:</strong> R$ {{ professor.valor_hora }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Nenhum professor encontrado com esse termo.</p>
+    {% endif %}
+</body>
+</html>
