@@ -1,0 +1,1 @@
+from .professor_search_view import ProfessorSearchView
