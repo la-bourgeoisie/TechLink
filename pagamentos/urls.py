@@ -1,13 +1,15 @@
 from django.urls import path
+from pagamentos.views import (
+    CheckoutView,
+    create_payment,
+    abacate_pay_webhook
+)
 
 app_name = 'pagamentos'
 
-urlpatterns = []
-
-'''
 urlpatterns = [
-    path('pagamento/<int:id>/', 'pagamentos.views.pagamento', name='pagamento'),
-    path('pagamentos/', 'pagamentos.views.pagamentos', name='pagamentos'),
-    path('pagamento/<int:id>/editar/', 'pagamentos.views.editar_pagamento', name='editar_pagamento'),
-    path('pagamento/<int:id>/deletar/', 'pagamentos.views.deletar_pagamento', name='deletar_pagamento'),
-]'''
+    path('checkout/', CheckoutView.as_view(), name='pagamentos'),
+    path("create-payment-intent/", create_payment, name="create_payment"),
+    path("/webhook/abacatepay/", abacate_pay_webhook, name="abacate_pay_webhook")
+]
+

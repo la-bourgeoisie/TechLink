@@ -12,9 +12,19 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv()
+
+
+# Tokens API
+STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY")
+STRIPE_API_KEY= os.getenv("STRIPE_API_KEY")
+ABACATE_PAY_API_KEY= os.getenv("ABACATE_PAY_API_KEY")
+
 
 
 # Quick-start development settings - unsuitable for production

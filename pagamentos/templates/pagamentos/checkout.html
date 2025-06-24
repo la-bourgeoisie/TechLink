@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titles %}
+    Techlink | Checkout
+{% endblock %}
+
+
+{% block content %}
+<main class="w-full mb-40">
+    <div class="bg-gray-200 text-center p-6 flex flex-col gap-3">
+        <h3 class="text-gray-900 text-xl font-semibold">Checkout</h3>
+        <p class="text-gray-900"> <span class="text-gray-600">Inicio /</span> Checkout</p>
+    </div>
+
+    <div class="flex flex-col lg:flex-row justify-center items-center lg:items-start mt-16 gap-16 px-4">
+        
+        <!-- Coluna da Esquerda: Método de Pagamento -->
+        <div class="flex flex-col">
+            <h2 id="payment-method-title" class="text-gray-900 font-semibold text-3xl mb-10">Método de Pagamento</h2>
+            
+            <div id="payment-method-selector" class="flex gap-4 w-full min-w-[400px]">
+                <!-- Cartão de Crédito (pré-selecionado) -->
+                <div id="option-card" class="payment-option flex justify-between items-center border border-green-500 px-4 py-2 flex-3 cursor-pointer" data-method="card">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-credit-card text-xl" style="color: #ff6636;"></i>
+                        <span class="text-gray-700">Cartão de Crédito</span>
+                    </div>
+                    <i class="fa-solid fa-circle-check text-green-600 text-xl"></i>
+                </div>
+                <!-- Pix -->
+                <div id="option-pix" class="payment-option border border-gray-400 px-4 py-2 flex items-center gap-3 flex-1 cursor-pointer" data-method="pix">
+                    <img class="w-[24px] h-[24px]" src="{% static 'img/pix.png' %}" alt="ícone do pix">
+                    <span class="text-gray-700">Pix</span>
+                </div>
+            </div>
+
+            <!-- Formulário de Pagamento (contém ambos os fluxos) -->
+            <form method="post" class="w-full mt-6" id="payment-form" novalidate>
+                {% csrf_token %}
+                <div id="card-form-fields">
+                    <label for="id_name" class="text-gray-900">Nome do titular</label>
+                    <input type="text" name="name" class="w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 mb-5 outline-none" placeholder="Nome no Cartão" required id="id_name">
+                    
+                    <label for="card-element" class="text-gray-900 mt-4">Informações do Cartão</label>
+                    <div id="card-element" class="w-full px-4 py-3 mt-2 bg-white border border-gray-300"></div>
+                    <div id="card-errors" class="text-red-500 text-sm mt-2" role="alert"></div>
+                </div>
+                
+                <button type="submit" id="submit-button" class="w-full bg-red-900 text-white px-5 py-3 font-semibold my-6 text-xl cursor-pointer hover:bg-red-700 transition duration-300">
+                    Finalizar Pagamento
+                </button>
+            </form>
+
+            <!-- Container para exibir o QR Code do Pix -->
+            <div id="pix-display" class="hidden text-center p-2 border border-gray-200">
+                <h3 class="text-2xl font-semibold mb-4">Pague com Pix para Finalizar</h3>
+                <p class="text-gray-600 mb-4">Escaneie o QR Code abaixo com seu app do banco.</p>
+                <img id="pix-qr-code-img" src="" alt="QR Code Pix" class="block max-w-[250px] mx-auto mb-4"/>
+                <p class="text-gray-600 mb-2">Ou use o código "copia e cola":</p>
+                <input type="text" id="pix-copy-paste" readonly class="p-1 w-full bg-gray-100 border border-gray-300 rounded-sm mb-3">
+                <button id="copy-button" class="bg-gray-200 px-4 py-2 rounded-lg hover:bg-gray-300 cursor-pointer">Copiar Código</button>
+                <p class="mt-6 text-sm text-gray-500">Após o pagamento, a confirmação é automática.</p>
+            </div>
+        </div>
+
+        <!-- Coluna da Direita: Resumo do Pedido -->
+        <div class="border border-gray-200 w-full md:w-[536px]">
+            <div class="border-b border-gray-200 w-full p-6 flex flex-col">
+                <span class="text-gray-900 text-xl font-medium mb-4">Agendamento</span>
+                <div class="flex flex-col text-gray-900">
+                    <span>Instrutor: Fernando Ribeiro</span> 
+                    <span> Dia: 26/05/2025</span>
+                    <span>Horário: 14:00 às 15:00</span> 
+                </div>
+            </div>
+            <div class="p-6 w-full flex flex-col">
+                <span class="text-gray-900 text-xl font-medium mb-4">Resumo da Compra</span>
+                <div class="flex justify-between mb-5">
+                    <span class="text-gray-600">Subtotal</span>
+                    <span class="text-gray-900">R$ 50,00</span>
+                </div>
+                <div class="flex justify-between border-b border-gray-200 pb-6">
+                    <span class="text-gray-600">Cupom</span>
+                    <span class="text-gray-900">8%</span>
+                </div>
+            </div>
+            <div class="px-6 w-full flex flex-col">
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-800">Total:</span>
+                    <span class="text-gray-800 font-semibold text-2xl pb-6">R$ 46,00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let selectedPaymentMethod = 'card';
+    const stripe = Stripe("{{ STRIPE_PUBLISHABLE_KEY }}");
+    let elements = stripe.elements();
+    let cardElement = elements.create('card');
+    cardElement.mount('#card-element');
+
+    const paymentForm = document.getElementById('payment-form');
+    const submitButton = document.getElementById('submit-button');
+    const cardFormFields = document.getElementById('card-form-fields');
+    const pixDisplay = document.getElementById('pix-display');
+    const paymentOptions = document.querySelectorAll(".payment-option");
+    const copyButton = document.getElementById('copy-button');
+    const nameInput = document.getElementById('id_name');
+    const paymentMethodSelector = document.getElementById('payment-method-selector');
+    const paymentMethodTitle = document.getElementById('payment-method-title'); 
+
+    paymentOptions.forEach(option => {
+        option.addEventListener("click", () => {
+            selectedPaymentMethod = option.getAttribute('data-method');
+
+            paymentOptions.forEach(opt => {
+                opt.classList.remove("border-green-500", "border-2");
+                opt.classList.add("border-gray-400");
+                const icon = opt.querySelector(".fa-circle-check");
+                if (icon) icon.remove();
+            });
+            option.classList.add("border-green-500", "border-2");
+            option.classList.remove("border-gray-400");
+            const checkIcon = document.createElement("i");
+            checkIcon.className = "fa-solid fa-circle-check text-green-600 text-xl";
+            option.appendChild(checkIcon);
+            
+            if (selectedPaymentMethod === 'card') {
+                if (cardFormFields) cardFormFields.style.display = 'block';
+                if (pixDisplay) pixDisplay.style.display = 'none';
+                if (submitButton) submitButton.textContent = 'Finalizar Pagamento';
+                if (nameInput) nameInput.required = true;
+            } else { 
+                if (cardFormFields) cardFormFields.style.display = 'none';
+                if (pixDisplay) pixDisplay.style.display = 'none'; 
+                if (submitButton) submitButton.textContent = 'Gerar QR Code Pix';
+                if (nameInput) nameInput.required = false;
+            }
+        });
+    });
+
+    paymentForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        submitButton.disabled = true;
+        submitButton.textContent = 'Processando...';
+
+        const createPaymentUrl = "{% url 'pagamentos:create_payment' %}";
+        
+        if (selectedPaymentMethod === 'card') {
+            if (!paymentForm.checkValidity()) {
+                paymentForm.reportValidity();
+                submitButton.disabled = false;
+                submitButton.textContent = 'Finalizar Pagamento';
+                return;
+            }
+            try {
+                const response = await fetch(createPaymentUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}' },
+                    body: JSON.stringify({ payment_method: 'card' })
+                });
+                const { clientSecret, error } = await response.json();
+                if (error) throw new Error(error);
+
+                const { paymentIntent, error: stripeError } = await stripe.confirmCardPayment(clientSecret, {
+                    payment_method: {
+                        card: cardElement,
+                        billing_details: { name: nameInput.value },
+                    }
+                });
+                if (stripeError) throw new Error(stripeError.message);
+                if (paymentIntent && paymentIntent.status === 'succeeded') {
+                    alert('Pagamento com cartão realizado com sucesso!');
+                    // Idealmente, redirecionar para uma página de sucesso
+                    // window.location.href = '/pagina-de-sucesso/';
+                }
+            } catch (e) {
+                alert(e.message);
+                submitButton.disabled = false;
+                submitButton.textContent = 'Finalizar Pagamento';
+            }
+        } else if (selectedPaymentMethod === 'pix') {
+            try {
+                const response = await fetch(createPaymentUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}' },
+                    body: JSON.stringify({ payment_method: 'pix' })
+                });
+                const data = await response.json();
+                if (data.error) {
+                    throw new Error(`Erro da API: ${JSON.stringify(data.error)}`);
+                }
+
+                document.getElementById('pix-qr-code-img').src = data.qr_code_image;
+                document.getElementById('pix-copy-paste').value = data.qr_code_text;
+                
+                if (paymentForm) paymentForm.style.display = 'none';
+                if (paymentMethodSelector) paymentMethodSelector.style.display = 'none';
+                if (paymentMethodTitle) paymentMethodTitle.style.display = 'none'; 
+                if (pixDisplay) pixDisplay.style.display = 'block';
+                
+
+            } catch (e) {
+                alert(e.message);
+                submitButton.disabled = false;
+                submitButton.textContent = 'Gerar QR Code Pix';
+            }
+        }
+    });
+    
+    copyButton.addEventListener('click', () => {
+        const pixInput = document.getElementById('pix-copy-paste');
+        if (pixInput) {
+            pixInput.select();
+            document.execCommand('copy');
+            copyButton.textContent = 'Copiado!';
+            setTimeout(() => { copyButton.textContent = 'Copiar Código'; }, 2000);
+        }
+    });
+});
+</script>
+{% endblock %}
