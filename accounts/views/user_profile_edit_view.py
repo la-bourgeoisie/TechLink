@@ -1,7 +1,7 @@
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
-from accounts.forms.user_form import CustomUserCreationForm, UserProfileUpdateForm
+from accounts.forms.user_form import CustomPasswordChangeForm, CustomUserCreationForm, UserProfileUpdateForm
 from accounts.forms.professor_form import ProfessorProfileForm
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
@@ -15,7 +15,7 @@ class UserProfileEditView(LoginRequiredMixin, TemplateView):
 
         context['usuario'] = usuario
         context['profile_form'] = UserProfileUpdateForm(instance=usuario)
-        context['password_form'] = PasswordChangeForm(user=usuario)
+        context['password_form'] = CustomPasswordChangeForm(user=usuario)
 
         if usuario.tipo == 'professor':
             context['professor_form'] = ProfessorProfileForm(instance=usuario.professor_profile)

@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.contrib.auth.forms import PasswordChangeForm
 from accounts.models import CustomUser
 
 class CustomUserCreationForm(forms.ModelForm):
@@ -68,3 +69,22 @@ class CustomAuthenticationForm(forms.Form):
             'placeholder': 'Senha'
         })
     )
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Adiciona as classes do Tailwind a cada um dos campos
+        self.fields['old_password'].widget.attrs.update({
+            'class': 'w-full px-4 py-2 mt-2 text-gray-500 bg-white border border-gray-200 mb-5 outline-none',
+            'placeholder': '••••••••'
+        })
+        self.fields['new_password1'].widget.attrs.update({
+            'class': 'w-full px-4 py-2 mt-2 text-gray-500 bg-white border border-gray-200 mb-5 outline-none',
+            'placeholder': '••••••••'
+        })
+        self.fields['new_password2'].widget.attrs.update({
+            'class': 'w-full px-4 py-2 mt-2 text-gray-500 bg-white border border-gray-200 mb-5 outline-none',
+            'placeholder': '••••••••'
+        })
+

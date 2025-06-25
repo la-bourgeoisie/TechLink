@@ -39,7 +39,7 @@
     </div>
   </div>
 
-  <div class="w-full flex justify-center flex-col mt-[400px] max-w-[1320px] px-4 mb-8">
+  <div class="w-full flex justify-center flex-col mt-[350px] max-w-[1320px] px-4 mb-8">
     <h2 class="font-semibold text-gray-900 text-3xl mb-8">Configurações</h2>
     
     <div>
@@ -107,6 +107,42 @@
           </div>
         </form>
     </div>
+  </div>
+
+  <div class="w-full flex flex-col justify-start max-w-[1320px] px-4 mb-16">
+    <h2 class="font-semibold text-gray-900 text-3xl mb-8">Mudar Senha</h2>
+
+    <form method="post" class="lg:w-1/2">
+      {% csrf_token %}
+
+      <div class="flex flex-col">
+          <label for="{{ password_form.old_password.id_for_label }}" class="text-gray-900">Senha Atual</label>
+              {{password_form.old_password }}
+              {% if password_form.old_password.errors %}
+                <p class="text-red-500 text-sm mt-1">{{ password_form.old_password.errors.as_text }}</p>
+              {% endif %}
+      </div>
+
+      <div class="flex flex-col">
+          <label for="{{ password_form.new_password1.id_for_label }}" class="text-gray-900">Nova Senha</label>
+              {{ password_form.new_password1 }}
+              {% if password_form.new_password1.errors %}
+                <p class="text-red-500 text-sm mt-1">{{ password_form.new_password1.as_text }}</p>
+              {% endif %}
+      </div>
+
+      
+      <div class="flex flex-col">
+          <label for="{{ password_form.new_password2.id_for_label }}" class="text-gray-900">Confirme a Senha</label>
+              {{ password_form.new_password2 }}
+              {% if password_form.new_password2.errors %}
+                <p class="text-red-500 text-sm mt-1">{{ password_form.new_password2.errors.as_text }}</p>
+              {% endif %}
+      </div>
+
+      <button type="submit" name="submit_senha" class="py-4 px-6 bg-red-900 text-white font-medium flex gap-3 items-center cursor-pointer hover:bg-red-800 transition duration-300">Mudar Senha</button>
+    </form>
+
   </div>
 </main>
 
