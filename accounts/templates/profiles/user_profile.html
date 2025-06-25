@@ -1,119 +1,169 @@
-{% extends "base_accounts.html" %}
-{% block content %}
+{% extends "base.html" %}
+{% load static %}
 
-<div class="card-body d-flex align-items-center flex-column">
-  <h2 class="card-title m-3"><p>Bem-vindo, {{ request.user.nome }}!</p></h2>
+{% block titles %}
+    Techlink | Perfil
+{% endblock %}
 
-  {% if request.user.is_authenticated %}
-    <h3>Meu Perfil</h2>
 
-    <!-- Formulário de edição de perfil -->
-    <h3>Meu Perfil</h3>
-    <form method="post" class="w-75">
-      {% csrf_token %}
-      {{ profile_form.non_field_errors }}
-
-      <div>
-        <label>Foto</label>
-        {{ profile_form.profile_picture }}
-      </div>
-
-      <div>
-        <label>Email:</label>
-        {{ profile_form.email }}
-      </div>
-      
-
-      <div>
-        <label>Nome:</label>
-        {{ profile_form.nome }}
-      </div>
-
-      <div>
-        <label>Sobrenome:</label>
-        {{ profile_form.sobrenome }}
-      </div>
-
-      <div>
-        <label>Celular:</label>
-        {{ profile_form.num_celular }}
-      </div>
-
-      <div class="d-flex justify-content-center mt-3 mb-5">
-        <button type="submit" name="submit_perfil" class="btn btn-success">Salvar</button>
-      </div>
-    </form>
-
-    <!-- Formulário de edição de perfil de professor-->
-    {% if request.user.tipo == "professor" %}
-    <h3 class="mt-4">Perfil de Professor</h3>
-    <form method="post" class="w-75">
-      {% csrf_token %}
-      {{ professor_form.non_field_errors }}
-
-      <div>
-        <label>Formação:</label>
-        {{ professor_form.formacao }}
-        {{ professor_form.formacao.errors }}
-      </div>
-
-      <div>
-        <label>Apresentação:</label>
-        {{ professor_form.apresentacao }}
-        {{ professor_form.apresentacao.errors }}
-      </div>
-
-      <div>
-        <label>Valor por Hora:</label>
-        {{ professor_form.valor_hora }}
-        {{ professor_form.valor_hora.errors }}
-      </div>
-
-      <div>
-        <label>Áreas de Conhecimento:</label>
-        {{ professor_form.areas_conhecimento }}
-        {{ professor_form.areas_conhecimento.errors }}
-      </div>
-
-      <div class="d-flex justify-content-center mt-3 mb-5">
-        <button type="submit" name="submit_perfil_professor" class="btn btn-success">Salvar Perfil de Professor</button>
-      </div>
-    </form>
-    {% endif %}
-
-    <!-- Formulário de alteração de senha -->
-    <h3>Alterar Senha</h3>
-    <form method="post" class="w-75">
-      {% csrf_token %}
-      {{ password_form.non_field_errors }}
-
-      <div>
-        <label>Senha atual:</label>
-        {{ password_form.old_password }}
-        {{ password_form.old_password.errors }}
-      </div>
-
-      <div>
-        <label>Nova senha:</label>
-        {{ password_form.new_password1 }}
-        {{ password_form.new_password1.errors }}
-      </div>
-
-      <div>
-        <label>Confirme a nova senha:</label>
-        {{ password_form.new_password2 }}
-        {{ password_form.new_password2.errors }}
-      </div>
-
-      <div class="d-flex justify-content-center mt-3 mb-5">
-        <button type="submit" name="submit_senha" class="btn btn-success">Salvar</button>
-      </div>
-    </form>
-
-    
-  {% else %}
-    <p>Você não está logado.</p>
-  {% endif %}
-</div>
+{% block styles %}
 
 {% endblock %}
+
+
+{% block content %}
+
+<main class="w-full flex flex-col items-center">
+  <div class="h-[280px] w-full absolute" style="background-color: #FDFCF6;">
+    <div class="w-full flex flex-col mx-auto bg-white border border-gray-300 relative top-25 max-w-[1320px] mx-4">
+      <div class="flex lg:justify-between flex-col lg:flex-row items-center py-6 px-10 gap-4 lg:gap-0">
+        <div class="flex gap-5 items-center">
+          <img src="{% static 'img/Photos.png' %}" alt="Imagem perfil teste" class=" h-[100px] w-[100px] rounded-full object-cover">
+          <span class="text-gray-900 text-xl font-semibold">{{usuario.nome}} {{usuario.sobrenome}}</span>
+        </div>
+        <div>
+          <button class="bg-red-100 text-red-800 py-4 px-6 font-semibold flex gap-3 items-center cursor-pointer hover:bg-red-400 transition duration-300">Seja um instrutor <i class="fa-solid fa-arrow-right" style="color: #9E0000;"></i></button>
+        </div>
+      </div>
+
+      <div class="flex items-center w-full justify-center border-b border-t border-gray-200 md:gap-32 gap-8">
+            <button class="tab-button text-gray-500 font-medium py-3 px-6 border-b-2 border-transparent transition-colors duration-300 cursor-pointer">
+                Instrutores
+            </button>
+            
+            <button class="tab-button text-gray-900 font-medium py-3 px-6 border-b-2 border-red-500 transition-colors duration-300 cursor-pointer">
+                Configurações
+            </button>
+      </div>
+      
+    </div>
+  </div>
+
+  <div class="w-full flex justify-center flex-col mt-[400px] max-w-[1320px] px-4 mb-8">
+    <h2 class="font-semibold text-gray-900 text-3xl mb-8">Configurações</h2>
+    
+    <div>
+        <form method="post" enctype="multipart/form-data" class="flex-col flex lg:flex-row gap-8 lg:gap-32 w-full">
+          {% csrf_token %}
+          <div class="flex items-center justify-center">
+            <div class="image-upload-container">
+    
+            <input type="file" name="{{ profile_form.profile_picture.name }}" id="{{ profile_form.profile_picture.id_for_label }}" class="hidden-file-input">
+            
+            <div class="relative">
+              <img id="image-preview" 
+                src="{% if usuario.profile_picture %}{{ usuario.profile_picture.url }}{% else %}{% static 'img/default-avatar.jpg' %}{% endif %}" 
+                alt="Foto de Perfil" 
+                class="profile-pic">
+                <label for="{{ profile_form.profile_picture.id_for_label }}" class="upload-label">
+                <i class="fa-solid fa-arrow-up-from-bracket"></i> <span>Upload Photo</span>
+              </label>
+            </div>
+            
+
+            {% if profile_form.profile_picture.errors %}
+                <div class="image-errors">
+                    {{ profile_form.profile_picture.errors.as_text }}
+                </div>
+            {% endif %}
+            </div>
+          </div>
+
+          <div class="flex-1">
+              <div class="flex gap-6">
+                <div class="flex-1">
+                    <label for="{{ profile_form.nome.id_for_label }}" class="text-gray-900">Nome</label>
+                    {{ profile_form.nome }}
+                    {% if profile_form.nome.errors %}
+                      <p class="text-red-500 text-sm mt-1">{{ profile_form.nome.errors.as_text }}</p>
+                    {% endif %}
+                </div>
+                
+                <div class="flex-1">
+                  <label for="{{ profile_form.sobrenome.id_for_label }}" class="text-gray-900">Sobrenome</label>
+                  {{ profile_form.sobrenome }}
+                  {% if profile_form.sobrenome.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ profile_form.sobrenome.errors.as_text }}</p>
+                  {% endif %}
+                </div>
+            </div>
+            <div>
+              <label for="{{ profile_form.num_celular.id_for_label }}" class="text-gray-900">Telefone</label>
+                  {{ profile_form.num_celular }}
+                  {% if profile_form.num_celular.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ profile_form.num_celular.errors.as_text }}</p>
+                  {% endif %}
+            </div>
+
+            <div>
+              <label for="{{ profile_form.email.id_for_label }}" class="text-gray-900">Email</label>
+                  {{ profile_form.email }}
+                  {% if profile_form.email.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ profile_form.email.errors.as_text }}</p>
+                  {% endif %}
+            </div>
+
+            <button type="submit" name="submit_perfil" class="py-4 px-6 bg-red-900 text-white font-medium flex gap-3 items-center cursor-pointer hover:bg-red-800 transition duration-300">Salvar</button>
+          </div>
+        </form>
+    </div>
+  </div>
+</main>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Seleciona os elementos do DOM
+    const fileInput = document.getElementById('{{ profile_form.profile_picture.id_for_label }}');
+    const imagePreview = document.getElementById('image-preview');
+
+    // Verifica se os elementos existem na página
+    if (fileInput && imagePreview) {
+        // Adiciona um "ouvinte" para o evento 'change' no input de arquivo
+        fileInput.addEventListener('change', function(event) {
+            // Pega o primeiro arquivo selecionado pelo usuário
+            const file = event.target.files[0];
+
+            // Se um arquivo foi realmente selecionado...
+            if (file) {
+                // Cria um objeto FileReader para ler o arquivo
+                const reader = new FileReader();
+
+                // Define o que acontece quando o arquivo terminar de ser lido
+                reader.onload = function(e) {
+                    // Atualiza o atributo 'src' da tag <img> com o resultado da leitura
+                    // O resultado é uma string Base64 que representa a imagem
+                    imagePreview.src = e.target.result;
+                };
+
+                // Pede ao FileReader para ler o arquivo como uma URL de dados (Base64)
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+});
+        // 1. Seleciona todos os botões que têm a classe 'tab-button'
+        const tabButtons = document.querySelectorAll('.tab-button');
+
+        // Classes que definem o estado ATIVO
+        const activeClasses = ['border-red-500', 'text-gray-900'];
+        // Classes que definem o estado INATIVO
+        const inactiveClasses = ['border-transparent', 'text-gray-500'];
+
+        // 2. Adiciona um "ouvinte" de clique para cada botão
+        tabButtons.forEach(clickedButton => {
+            clickedButton.addEventListener('click', () => {
+                
+                // 3. Remove o estado ativo de TODOS os botões
+                tabButtons.forEach(button => {
+                    button.classList.remove(...activeClasses);
+                    button.classList.add(...inactiveClasses);
+                });
+                
+                // 4. Adiciona o estado ativo APENAS ao botão que foi clicado
+                clickedButton.classList.remove(...inactiveClasses);
+                clickedButton.classList.add(...activeClasses);
+            });
+        });
+</script>
+{% endblock %}
+

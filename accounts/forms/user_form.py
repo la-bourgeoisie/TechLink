@@ -34,6 +34,25 @@ class CustomUserCreationForm(forms.ModelForm):
             user.save()
         return user
 
+class UserProfileUpdateForm(forms.ModelForm):
+    """
+    Formulário para o usuário editar suas próprias informações de perfil.
+    """
+    class Meta:
+        model = CustomUser
+        fields = ['profile_picture', 'nome', 'sobrenome', 'email', 'num_celular']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Aplica as classes de estilo Tailwind que você quer em todos os campos
+        tailwind_classes = 'w-full px-4 py-2 mt-2 text-gray-500 bg-white border border-gray-200 mb-5 outline-none'
+        
+        for field_name, field in self.fields.items():
+            # O campo de arquivo (profile_picture) pode ter um estilo diferente
+            if isinstance(field.widget, forms.FileInput):
+                field.widget.attrs.update({'class': 'w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100'})
+            else:
+                field.widget.attrs.update({'class': tailwind_classes})
 
 
 class CustomAuthenticationForm(forms.Form):
