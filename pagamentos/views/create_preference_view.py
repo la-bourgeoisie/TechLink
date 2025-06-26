@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 
-stripe.api_key = settings.STRIPE_PUBLISHABLE_KEY
+stripe.api_key = settings.STRIPE_API_KEY
 
 @csrf_exempt
 def create_payment(request):

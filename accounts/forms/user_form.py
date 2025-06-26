@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.contrib.auth.forms import PasswordChangeForm
 from accounts.models import CustomUser
 
 class CustomUserCreationForm(forms.ModelForm):
@@ -8,7 +9,7 @@ class CustomUserCreationForm(forms.ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ['email', 'nome', 'sobrenome', 'num_celular', 'tipo']
+        fields = ['email', 'nome', 'sobrenome', 'num_celular', 'tipo','profile_picture']
         widgets = {
             'telefone': forms.TextInput(attrs={
                 'placeholder': 'Ex: (21) 98765-4321'
@@ -34,6 +35,25 @@ class CustomUserCreationForm(forms.ModelForm):
             user.save()
         return user
 
+class UserProfileUpdateForm(forms.ModelForm):
+    """
+    Formulário para o usuário editar suas próprias informações de perfil.
+    """
+    class Meta:
+        model = CustomUser
+        fields = ['profile_picture', 'nome', 'sobrenome', 'email', 'num_celular']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Aplica as classes de estilo Tailwind que você quer em todos os campos
+        tailwind_classes = 'w-full px-4 py-2 mt-2 text-gray-500 bg-white border border-gray-200 mb-5 outline-none'
+        
+        for field_name, field in self.fields.items():
+            # O campo de arquivo (profile_picture) pode ter um estilo diferente
+            if isinstance(field.widget, forms.FileInput):
+                field.widget.attrs.update({'class': 'w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100'})
+            else:
+                field.widget.attrs.update({'class': tailwind_classes})
 
 
 class CustomAuthenticationForm(forms.Form):
@@ -49,3 +69,22 @@ class CustomAuthenticationForm(forms.Form):
             'placeholder': 'Senha'
         })
     )
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Adiciona as classes do Tailwind a cada um dos campos
+        self.fields['old_password'].widget.attrs.update({
+            'class': 'w-full px-4 py-2 mt-2 text-gray-500 bg-white border border-gray-200 mb-5 outline-none',
+            'placeholder': '••••••••'
+        })
+        self.fields['new_password1'].widget.attrs.update({
+            'class': 'w-full px-4 py-2 mt-2 text-gray-500 bg-white border border-gray-200 mb-5 outline-none',
+            'placeholder': '••••••••'
+        })
+        self.fields['new_password2'].widget.attrs.update({
+            'class': 'w-full px-4 py-2 mt-2 text-gray-500 bg-white border border-gray-200 mb-5 outline-none',
+            'placeholder': '••••••••'
+        })
+
